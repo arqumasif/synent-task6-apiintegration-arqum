@@ -152,6 +152,8 @@
         <p id="loading" style="display:none; text-align:center; color:white; font-size:20px; margin-top:10px;">
             Loading...
         </p>
+        <p id="error" style="display:none; text-align:center; color:red; font-size:20px; margin-top:10px;">
+        </p>
 
         <div class="weather_body">
             <h1 class="weather_heading"></h1>
@@ -213,6 +215,7 @@
         const w_wind = document.querySelector(".weather_wind");
         const searchCity = document.querySelector(".weather_search");
         const loading = document.getElementById("loading");
+        const error = document.getElementById("error");
 
         const getCountryName = (country) => {
             return new Intl.DisplayNames([country], { type: "region" }).of(country);
@@ -240,24 +243,45 @@
 
         const getWeatherData = async () => {
             loading.style.display = "block";
+            error.style.display = "none";
 
             const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=204d827c3d92dc8b9158db1632d5e618`;
-            const res = await fetch(apiUrl);
-            const data = await res.json();
-            loading.style.display = "none";
-
-            const { dt, main, name, sys, wind, weather, timezone } = data;
-            w_heading.innerHTML = `${name}, ${getCountryName(sys.country)}`;
-            w_date.innerHTML = getDate(dt, timezone);
-            w_forecast.innerHTML = weather[0].main;
-            w_icon.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather[0].icon}@2x.png">`;
-            w_temp.innerHTML = `Temp: ${main.temp.toFixed()}&#176;C`;
-            w_min.innerHTML = `Min: ${main.temp_min.toFixed()}&#176;C`;
-            w_max.innerHTML = `Max: ${main.temp_max.toFixed()}&#176;C`;
-            w_feellike.innerHTML = `${main.feels_like.toFixed()}&#176;C`;
-            w_humidity.innerHTML = `${main.humidity}%`;
-            w_pressure.innerHTML = `${main.pressure} hPa`;
-            w_wind.innerHTML = `${wind.speed} m/s`;
+            try {
+                const res = await fetch(apiUrl);
+                const data = await res.json();
+                if (!res.ok) {
+                    throw new Error(data.message);
+                }
+                loading.style.display = "none";
+                const { dt, main, name, sys, wind, weather, timezone } = data;
+                w_heading.innerHTML = `${name}, ${getCountryName(sys.country)}`;
+                w_date.innerHTML = getDate(dt, timezone);
+                w_forecast.innerHTML = weather[0].main;
+                w_icon.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather[0].icon}@2x.png">`;
+                w_temp.innerHTML = `Temp: ${main.temp.toFixed()}&#176;C`;
+                w_min.innerHTML = `Min: ${main.temp_min.toFixed()}&#176;C`;
+                w_max.innerHTML = `Max: ${main.temp_max.toFixed()}&#176;C`;
+                w_feellike.innerHTML = `${main.feels_like.toFixed()}&#176;C`;
+                w_humidity.innerHTML = `${main.humidity}%`;
+                w_pressure.innerHTML = `${main.pressure} hPa`;
+                w_wind.innerHTML = `${wind.speed} m/s`;
+            }
+            catch (err) {
+                loading.style.display = "none";
+                error.style.display = "block";
+                error.innerHTML = "❌ City not found or unable to fetch weather.";
+                w_heading.innerHTML = "";
+                w_date.innerHTML = "";
+                w_forecast.innerHTML = "";
+                w_icon.innerHTML = "";
+                w_temp.innerHTML = "";
+                w_min.innerHTML = "";
+                w_max.innerHTML = "";
+                w_feellike.innerHTML = "";
+                w_humidity.innerHTML = "";
+                w_pressure.innerHTML = "";
+                w_wind.innerHTML = "";
+            }
         }
         window.addEventListener("load", getWeatherData);
     </script>
