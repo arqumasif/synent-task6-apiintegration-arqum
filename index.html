@@ -12,8 +12,7 @@
         * {
             margin: 0;
             padding: 0;
-            box-sizing:
-                border-box;
+            box-sizing: border-box;
         }
 
         body {
@@ -150,6 +149,9 @@
                 <input type="text" class="city_name" placeholder="search your city...">
             </form>
         </div>
+        <p id="loading" style="display:none; text-align:center; color:white; font-size:20px; margin-top:10px;">
+            Loading...
+        </p>
 
         <div class="weather_body">
             <h1 class="weather_heading"></h1>
@@ -210,6 +212,7 @@
         const w_pressure = document.querySelector(".weather_pressure");
         const w_wind = document.querySelector(".weather_wind");
         const searchCity = document.querySelector(".weather_search");
+        const loading = document.getElementById("loading");
 
         const getCountryName = (country) => {
             return new Intl.DisplayNames([country], { type: "region" }).of(country);
@@ -236,9 +239,13 @@
         })
 
         const getWeatherData = async () => {
+            loading.style.display = "block";
+
             const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=204d827c3d92dc8b9158db1632d5e618`;
             const res = await fetch(apiUrl);
             const data = await res.json();
+            loading.style.display = "none";
+
             const { dt, main, name, sys, wind, weather, timezone } = data;
             w_heading.innerHTML = `${name}, ${getCountryName(sys.country)}`;
             w_date.innerHTML = getDate(dt, timezone);
