@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css"
+        integrity="sha512-DxV+EoADOkOygM4IR9yXP8Sb2qwgidEmeqAEmDKIOfPRQZOWbXCzLC6vjbZyy0vPisbH2SyW27+ddLVCN+OMzQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <title>Weahter Application</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing:
+                border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: black;
+            font-family: sans-serif;
+        }
+
+        .container {
+            width: 60rem;
+            height: 38rem;
+            background-image: url("https://images.pexels.com/photos/3742711/pexels-photo-3742711.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1");
+            padding: 1rem;
+            border-radius: 2rem;
+        }
+
+        .weather_search {
+            display: inline-block;
+            padding: 0.5rem;
+            background-color: black;
+            color: white;
+            border-radius: 0.5rem;
+        }
+
+        .city_name {
+            background-color: black;
+            border: none;
+            color: white;
+            margin-left: 3px;
+            padding: 0.2rem;
+        }
+
+        input::placeholder {
+            border: none;
+            color: white;
+        }
+
+        .weather_body {
+            margin-top: 0.5rem;
+            width: 30rem;
+            height: 20rem;
+            background-color: transparent;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 1rem;
+            line-height: 30px;
+        }
+
+        .weather_heading {
+            text-align: center;
+            font-size: 2rem;
+        }
+
+        .weather_date_time {
+            margin-top: 0.5rem;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .weather_forecast {
+            margin-top: 1rem;
+            text-align: center;
+            background-color: black;
+            width: 6rem;
+            color: #fff;
+            margin-right: auto;
+            margin-left: auto;
+            border-radius: 2rem;
+            font-size: 1.2rem;
+        }
+
+        .weather_icon {
+            margin-right: auto;
+            margin-left: auto;
+            text-align: center;
+        }
+
+        .weather_temperature {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .weather_minmax {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+        }
+
+        .weather_max {
+            margin-left: 2rem;
+        }
+
+        .weather_info {
+            margin-top: 1rem;
+            padding: 0.5rem;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50rem;
+            height: 10rem;
+            background-color: transparent;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .weather_card {
+            display: flex;
+            font-size: 1.3rem;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background-color: transparent;
+            border-radius: 0.8rem;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19), 0 0 #0000;
+        }
+
+        .main_heading {
+            text-align: center;
+            font-size: 2.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <section class="container">
+        <h1 class="main_heading">Weahter App</h1>
+        <div class="weather_header">
+            <form class="weather_search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" class="city_name" placeholder="search your city...">
+            </form>
+        </div>
+
+        <div class="weather_body">
+            <h1 class="weather_heading"></h1>
+            <p class="weather_date_time"></p>
+            <div class="weather_data">
+                <p class="weather_forecast"></p>
+                <p class="weather_icon"></p>
+            </div>
+            <p class="weather_temperature"></p>
+            <div class="weather_minmax">
+                <p class="weather_min"></p>
+                <p class="weather_max"></p>
+            </div>
+        </div>
+
+        <div class="weather_info">
+            <div class="weather_card">
+                <i class="fa-solid fa-droplet fa-2x"></i>
+                <div>
+                    <p>Feels Like</p>
+                    <p class="weather_feelslike"></p>
+                </div>
+            </div>
+            <div class="weather_card">
+                <i class="fa-solid fa-droplet fa-2x"></i>
+                <div>
+                    <p>Humidity</p>
+                    <p class="weather_humidity"></p>
+                </div>
+            </div>
+            <div class="weather_card">
+                <i class="fa-solid fa-gauge fa-2x"></i>
+                <div>
+                    <p>Pressure</p>
+                    <p class="weather_pressure"></p>
+                </div>
+            </div>
+            <div class="weather_card">
+                <i class="fa-solid fa-wind fa-2x"></i>
+                <div>
+                    <p>Wind</p>
+                    <p class="weather_wind"></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const w_heading = document.querySelector(".weather_heading");
+        const w_date = document.querySelector(".weather_date_time");
+        const w_forecast = document.querySelector(".weather_forecast");
+        const w_icon = document.querySelector(".weather_icon");
+        const w_temp = document.querySelector(".weather_temperature");
+        const w_min = document.querySelector(".weather_min");
+        const w_max = document.querySelector(".weather_max");
+        const w_feellike = document.querySelector(".weather_feelslike");
+        const w_humidity = document.querySelector(".weather_humidity");
+        const w_pressure = document.querySelector(".weather_pressure");
+        const w_wind = document.querySelector(".weather_wind");
+        const searchCity = document.querySelector(".weather_search");
+
+        const getCountryName = (country) => {
+            return new Intl.DisplayNames([country], { type: "region" }).of(country);
+        }
+
+        const getDate = (dt, timezone) => {
+            const utcMs = dt * 1000;
+            const offsetMs = timezone * 1000;
+            const localMs = utcMs + offsetMs;
+            return new Intl.DateTimeFormat("en-US", {
+                day: "numeric", month: "long", weekday: "long",
+                year: "numeric", hour: "numeric", minute: "numeric",
+                timeZone: "UTC"
+            }).format(new Date(localMs));
+        };
+
+        let city = "karachi";
+        searchCity.addEventListener("submit", (e) => {
+            e.preventDefault();
+            let cityname = document.querySelector(".city_name");
+            city = cityname.value;
+            getWeatherData();
+            cityname.value = "";
+        })
+
+        const getWeatherData = async () => {
+            const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=204d827c3d92dc8b9158db1632d5e618`;
+            const res = await fetch(apiUrl);
+            const data = await res.json();
+            const { dt, main, name, sys, wind, weather, timezone } = data;
+            w_heading.innerHTML = `${name}, ${getCountryName(sys.country)}`;
+            w_date.innerHTML = getDate(dt, timezone);
+            w_forecast.innerHTML = weather[0].main;
+            w_icon.innerHTML = `<img src="https://openweathermap.org/img/wn/${weather[0].icon}@2x.png">`;
+            w_temp.innerHTML = `Temp: ${main.temp.toFixed()}&#176;C`;
+            w_min.innerHTML = `Min: ${main.temp_min.toFixed()}&#176;C`;
+            w_max.innerHTML = `Max: ${main.temp_max.toFixed()}&#176;C`;
+            w_feellike.innerHTML = `${main.feels_like.toFixed()}&#176;C`;
+            w_humidity.innerHTML = `${main.humidity}%`;
+            w_pressure.innerHTML = `${main.pressure} hPa`;
+            w_wind.innerHTML = `${wind.speed} m/s`;
+        }
+        window.addEventListener("load", getWeatherData);
+    </script>
+</body>
+
+</html>
